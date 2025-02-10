@@ -34,7 +34,7 @@ func Start(
 	controllers.BindRoutes(ctx, router, service, repo, conf)
 
 	go func() {
-		if err := router.Run(); err != nil {
+		if err := router.Run(conf.GetAsString(constants.Port)); err != nil {
 			log.Fatal("shutting down server...:", err.Error())
 		}
 	}()
