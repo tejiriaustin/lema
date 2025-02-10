@@ -72,7 +72,6 @@ func setApiEnvironment() env.Environment {
 
 	staticEnvironment.
 		SetEnv(constants.Port, env.GetEnv(constants.Port, "8080")).
-		SetEnv(constants.RedisDsn, env.MustGetEnv(constants.RedisDsn)).
 		SetEnv(constants.DB, env.MustGetEnv(constants.DB)).
 		SetEnv(constants.ShouldAutoMigrate, env.MustGetEnv(constants.ShouldAutoMigrate)).
 		SetEnv(constants.JwtSecret, env.MustGetEnv(constants.JwtSecret)).
