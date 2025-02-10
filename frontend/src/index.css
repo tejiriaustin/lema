@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+}
+
+.clamp-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+
+.button-block .sqs-block-button-element {
+    color: gray !important;
+    padding: 10px 44px !important;
+    background-color: transparent;
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='10' ry='10' stroke='%23717680' stroke-width='2' stroke-dasharray='10%2c 10' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+    border-radius: 10px;
+}
+
+
+.lds-ellipsis,
+.lds-ellipsis div {
+    box-sizing: border-box;
+}
+.lds-ellipsis {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+.lds-ellipsis div {
+    position: absolute;
+    top: 33.33333px;
+    width: 13.33333px;
+    height: 13.33333px;
+    border-radius: 50%;
+    background: gray;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.lds-ellipsis div:nth-child(1) {
+    left: 8px;
+    animation: lds-ellipsis1 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(2) {
+    left: 8px;
+    animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(3) {
+    left: 32px;
+    animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(4) {
+    left: 56px;
+    animation: lds-ellipsis3 0.6s infinite;
+}
+@keyframes lds-ellipsis1 {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+@keyframes lds-ellipsis3 {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(0);
+    }
+}
+@keyframes lds-ellipsis2 {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(24px, 0);
+    }
+}
