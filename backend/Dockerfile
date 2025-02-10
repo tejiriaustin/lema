@@ -18,4 +18,4 @@ COPY --from=builder /app/.env .
 
 EXPOSE 8080
 
-CMD ["./lema", "server"]
+CMD ["./lema", "api"]
