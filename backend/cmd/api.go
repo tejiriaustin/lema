@@ -3,6 +3,7 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	"github.com/spf13/cobra"
@@ -40,7 +41,7 @@ func startApi(cmd *cobra.Command, args []string) {
 	config := setApiEnvironment()
 
 	dbCfg := &database.Config{
-		DB: config.GetAsString(constants.DB),
+		DB: fmt.Sprintf("/app/%s", config.GetAsString(constants.DB)),
 	}
 	dbConn, err := database.Initialize(dbCfg)
 	if err != nil {
