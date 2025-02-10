@@ -15,6 +15,14 @@ This project is my submission for the Lema Fullstack Engineer assessment. I'm ex
    cp .env.example .env
    # Edit .env with your configuration
    ```
+   Example
+   ```
+   PORT=8080
+   DB=lemadatabase.db
+   FRONTEND_URL="https://localhost:8081"
+   JWT_SECRET_KEY="secret-key"
+   SHOULD_AUTO_MIGRATE="true"
+   ```
 
 3. Run the app:
    ```
