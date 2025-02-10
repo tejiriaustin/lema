@@ -3,7 +3,6 @@ package cmd
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"github.com/spf13/cobra"
