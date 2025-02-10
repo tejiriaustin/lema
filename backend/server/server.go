@@ -9,6 +9,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	constants "github.com/tejiriaustin/lema/constants"
 	"github.com/tejiriaustin/lema/controllers"
 	"github.com/tejiriaustin/lema/env"
 	"github.com/tejiriaustin/lema/middleware"
