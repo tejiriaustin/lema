@@ -40,7 +40,7 @@ DELETE /posts/:id          // Delete post
 
 1. Clone repository:
 ```bash
-git clone https://github.com/yourusername/lema.git
+git clone https://github.com/tejiriaustin/lema.git
 ```
 
 2. Backend Setup
