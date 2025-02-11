@@ -12,27 +12,27 @@ import (
 
 func ReadPaginationOptions() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		params := ctx.Params
 
-		if pageNumber, _ := params.Get("pageNumber"); pageNumber != "" {
+		if pageNumber := ctx.Query("pageNumber"); pageNumber != "" {
 			pageNum, err := strconv.ParseInt(pageNumber, 10, 64)
 			if err != nil {
 				response.FormatResponse(ctx, http.StatusBadRequest, "page number must be a number", nil)
+				ctx.Abort()
 				return
 			}
-
 			ctx.Set(string(constants.ContextKeyPageNumber), pageNum)
 		}
 
-		if pageSize, _ := params.Get("pageSize"); pageSize != "" {
+		if pageSize := ctx.Query("pageSize"); pageSize != "" {
 			perPageNum, err := strconv.ParseInt(pageSize, 10, 64)
 			if err != nil {
-				response.FormatResponse(ctx, http.StatusBadRequest, "per page number must be a number", nil)
+				response.FormatResponse(ctx, http.StatusBadRequest, "page size must be a number", nil)
+				ctx.Abort()
 				return
 			}
-
-			ctx.Set(string(constants.ContextKeyPageNumber), perPageNum)
+			ctx.Set(string(constants.ContextKeyPageSize), perPageNum)
 		}
 
+		ctx.Next()
 	}
 }
