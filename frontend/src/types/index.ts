@@ -16,7 +16,7 @@ export interface Address {
     street: string;
     city: string;
     state: string;
-    zipcode: string;
+    zipCode: string;
 }
 
 export interface PaginatedResponse<T> {

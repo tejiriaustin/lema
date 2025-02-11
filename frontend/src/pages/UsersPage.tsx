@@ -7,7 +7,7 @@ import {Button} from "../components/Button.tsx";
 import {CreateUserModal} from "../components/CreateUserModal.tsx";
 
 export function UsersPage() {
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(1);
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { data, createUser, isLoading } = useUsers(page);
@@ -21,7 +21,7 @@ export function UsersPage() {
             width: "392px",
             render: (value: Address | string) => {
                 const address = value as Address;
-                return `${address.street}, ${address.city}, ${address.state}, ${address.zipcode}`;
+                return `${address.street}, ${address.city}, ${address.state}, ${address.zipCode}`;
             }
         }
     ]
@@ -34,7 +34,7 @@ export function UsersPage() {
         setPage(newPage)
     }
 
-    const handleSubmit = async (userData: { full_name: string; email: string; address: Address }) => {
+    const handleSubmit = async (userData: { full_name: string; email: string; address: { street: string; city: string; state: string; zipcode: string}}) => {
         createUser(userData)
         setIsModalOpen(false)
     }
@@ -57,10 +57,10 @@ export function UsersPage() {
                         data={data?.data?.body.users || []}
                         columns={columns}
                         onRowClick={handleRowClick}
-                        rowsPerPage={10}
+                        rowsPerPage={4}
                         currentPage={page}
                         onPageChange={handlePageChange}
-                        totalPages={data?.data?.totalPages || 1}
+                        totalPages={data?.data?.body.paginationData.total_pages || 1}
                     />
                 </div>
             </div>

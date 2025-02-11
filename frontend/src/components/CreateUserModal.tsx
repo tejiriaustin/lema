@@ -2,12 +2,11 @@ import {Modal} from "./Modals.tsx";
 import React, {useState} from "react";
 import {InputBox} from "./InputBox.tsx";
 import {Button} from "./Button.tsx";
-import {Address} from "../types";
 
 interface CreateUserModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (data: { full_name: string; email: string; address: Address}) => void;
+    onSubmit: (data: { full_name: string; email: string; address: { street: string; city: string; state: string; zipcode: string}}) => void;
 }
 
 export function CreateUserModal({isOpen, onSubmit, onClose}: CreateUserModalProps) {

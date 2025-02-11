@@ -33,6 +33,5 @@ export function useUsers(page: number) {
         createUser: createUserMutation.mutate,
         isLoading: data.isLoading || createUserMutation.isPending,
         error: data.error || createUserMutation.error
-
     }
 }

@@ -8,15 +8,12 @@ export function PostCard({ title, content, onDelete }: PostCardProps) {
     return (
         <div className="rounded-lg mt-[10px] border border-gray-200 p-6 relative shadow-sm min-w-[280px] max-w-[300px] h-[340px]">
             <h2 className="text-[20px] text-[#535862] font-inter mb-4">{title}</h2>
-
-            <p className="text-[14px] text-[#535862] font-inter clamp-text">
-                {content}
-            </p>
+            <p className="text-[14px] text-[#535862] font-inter clamp-text">{content}</p>
 
             {onDelete && (
                 <button
                     onClick={onDelete}
-                    className="absolute top-6 right-6 text-red-500 hover:text-red-600"
+                    className="absolute top-3 right-4 text-red-500 hover:text-red-600"
                 >
                     <svg
                         width="16"

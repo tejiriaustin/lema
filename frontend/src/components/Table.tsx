@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 import { Loader } from "./Loader";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 
@@ -20,18 +20,10 @@ interface TableProps<T> {
     totalPages: number
 }
 
-export function Table<T>({data, columns, onRowClick, isLoading, rowsPerPage = 4,}: TableProps<T>) {
-    const [currentPage, setCurrentPage] = useState(1);
-    const totalPages = Math.ceil(data.length / rowsPerPage);
-
-    const paginatedData = data.slice(
-        (currentPage - 1) * rowsPerPage,
-        currentPage * rowsPerPage
-    );
-
+export function Table<T>({data, columns, onRowClick, isLoading, totalPages, onPageChange, currentPage}: TableProps<T>) {
     const goToPage = (page: number) => {
         if (page >= 1 && page <= totalPages) {
-            setCurrentPage(page);
+            onPageChange(page);
         }
     };
 
@@ -89,8 +81,8 @@ export function Table<T>({data, columns, onRowClick, isLoading, rowsPerPage = 4,
                                     </div>
                                 </td>
                             </tr>
-                        ) : paginatedData.length > 0 ? (
-                            paginatedData.map((item, index) => (
+                        ) : data.length > 0 ? (
+                            data.map((item, index) => (
                                 <tr
                                     key={index}
                                     onClick={() => onRowClick?.(item)}
