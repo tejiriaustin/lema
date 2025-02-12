@@ -9,6 +9,7 @@ export function useUsers(page: number) {
         queryFn: () => getUsers(page),
         placeholderData: keepPreviousData,
         staleTime: 5000,
+        retry: 1,
     })
 
     const createUserMutation = useMutation({
@@ -19,6 +20,7 @@ export function useUsers(page: number) {
             }).then(() => {
                 console.log("user queries invalidated")
             })
+
             queryClient.prefetchQuery({
                 queryKey: ['users', page],
                 queryFn: () => getUsers(page)

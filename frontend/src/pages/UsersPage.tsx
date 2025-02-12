@@ -3,14 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { useUsers } from '../hooks/useUsers.tsx';
 import { Table } from '../components/Table';
 import { User, Address } from '../types';
-import {Button} from "../components/Button.tsx";
-import {CreateUserModal} from "../components/CreateUserModal.tsx";
+import { Button } from "../components/Button.tsx";
+import { CreateUserModal } from "../components/CreateUserModal.tsx";
+import { useToast } from '../components/ToastProvider';
 
 export function UsersPage() {
     const [page, setPage] = useState(1);
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { data, createUser, isLoading } = useUsers(page);
+    const { showToast } = useToast();
 
     const columns = [
         { header: "Full Name", key: "fullName" as const },
@@ -20,23 +22,56 @@ export function UsersPage() {
             key: "address" as const,
             width: "392px",
             render: (value: Address | string) => {
-                const address = value as Address;
-                return `${address.street}, ${address.city}, ${address.state}, ${address.zipCode}`;
+                try {
+                    const address = value as Address;
+                    return `${address.street}, ${address.city}, ${address.state}, ${address.zipCode}`;
+                } catch (error) {
+                    console.log(error)
+                    showToast('Error displaying address', 'error');
+                    return 'Invalid address';
+                }
             }
         }
     ]
 
     const handleRowClick = (user: User) => {
-        navigate(`/users/${user.id}/posts`)
+        try {
+            navigate(`/users/${user.id}/posts`);
+        } catch (error) {
+            console.log(error)
+            showToast('Error navigating to user posts', 'error');
+        }
     }
 
     const handlePageChange = (newPage: number) => {
-        setPage(newPage)
+        try {
+            setPage(newPage);
+        } catch (error) {
+            console.log(error)
+            showToast('Error changing page', 'error');
+        }
     }
 
-    const handleSubmit = async (userData: { full_name: string; email: string; address: { street: string; city: string; state: string; zipcode: string}}) => {
-        createUser(userData)
-        setIsModalOpen(false)
+    const handleSubmit = async (userData: {
+        full_name: string;
+        email: string;
+        address: {
+            street: string;
+            city: string;
+            state: string;
+            zipcode: string
+        }
+    }) => {
+        try {
+            await createUser(userData);
+            showToast('User created successfully', 'success');
+            setIsModalOpen(false);
+        } catch (error) {
+            showToast(
+                error instanceof Error ? error.message : 'Failed to create user',
+                'error'
+            );
+        }
     }
 
     return (

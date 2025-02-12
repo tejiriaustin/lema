@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { UsersPage } from './pages/UsersPage'
 import { UserPostsPage } from './pages/UserPostsPage'
 import {TestPage} from "./pages/test.tsx";
+import {ToastProvider} from "./components/ToastProvider.tsx";
 
 const queryClient = new QueryClient({
         defaultOptions: {
@@ -22,13 +23,15 @@ const queryClient = new QueryClient({
 function App() {
     return (
         <QueryClientProvider client={queryClient}>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/test" element={<TestPage />} />
-                    <Route path="/" element={<UsersPage />} />
-                    <Route path="/users/:userId/posts" element={<UserPostsPage />} />
-                </Routes>
-            </BrowserRouter>
+            <ToastProvider>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/test" element={<TestPage />} />
+                        <Route path="/" element={<UsersPage />} />
+                        <Route path="/users/:userId/posts" element={<UserPostsPage />} />
+                    </Routes>
+                </BrowserRouter>
+            </ToastProvider>
             <ReactQueryDevtools />
         </QueryClientProvider>
     )
