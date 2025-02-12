@@ -57,15 +57,13 @@ func (c *UserController) GetUser(
 	usersRepo *repository.Repository[models.User],
 ) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		var req requests.GetUserRequest
-
-		err := ctx.BindJSON(&req)
-		if err != nil {
-			response.FormatResponse(ctx, http.StatusBadRequest, err.Error(), nil)
+		userID := ctx.Param("id")
+		if userID != "" {
+			response.FormatResponse(ctx, http.StatusBadRequest, "id not provided", nil)
 			return
 		}
 
-		user, err := userService.GetUserByID(ctx, req.UserID, usersRepo)
+		user, err := userService.GetUserByID(ctx, userID, usersRepo)
 		if err != nil {
 			response.FormatResponse(ctx, http.StatusBadRequest, err.Error(), nil)
 			return
@@ -96,6 +94,25 @@ func (c *UserController) GetUsers(
 		payload := map[string]interface{}{
 			"paginationData": paginate,
 			"users":          response.MultipleUserResponse(users),
+		}
+
+		response.FormatResponse(ctx, http.StatusOK, "successful", payload)
+	}
+}
+
+func (c *UserController) GetUsersCount(
+	userService service.UserServiceInterface,
+	usersRepo *repository.Repository[models.User],
+) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		usersCount, err := userService.GetUserCount(ctx, usersRepo)
+		if err != nil {
+			response.FormatResponse(ctx, http.StatusBadRequest, err.Error(), nil)
+			return
+		}
+
+		payload := map[string]interface{}{
+			"count": usersCount,
 		}
 
 		response.FormatResponse(ctx, http.StatusOK, "successful", payload)

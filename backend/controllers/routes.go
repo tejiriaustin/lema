@@ -30,8 +30,10 @@ func BindRoutes(
 
 	users := r.Group("/users")
 	{
-		users.POST("", controllers.UserController.CreateUser(sc.UserService, repo.UserRepo)) // POST /api/v1
-		users.GET("", controllers.UserController.GetUsers(sc.UserService, repo.UserRepo))    // GET /api/v1/users?pageNumber=0&pageSize=10
+		users.POST("", controllers.UserController.CreateUser(sc.UserService, repo.UserRepo))         // POST /api/v1/users
+		users.GET("/:id", controllers.UserController.GetUser(sc.UserService, repo.UserRepo))         // GET /api/v1/users/{id}
+		users.GET("", controllers.UserController.GetUsers(sc.UserService, repo.UserRepo))            // GET /api/v1/users?pageNumber=0&pageSize=10
+		users.GET("/count", controllers.UserController.GetUsersCount(sc.UserService, repo.UserRepo)) // GET /api/v1/users/count
 	}
 
 	posts := r.Group("/posts")

@@ -6,7 +6,6 @@ import (
 	"github.com/tejiriaustin/lema/logger"
 	"github.com/tejiriaustin/lema/models"
 	"github.com/tejiriaustin/lema/repository"
-	"go.uber.org/zap"
 )
 
 type (
@@ -50,11 +49,11 @@ func (s *UserService) CreateUser(ctx context.Context,
 
 	createdUser, err := userRepo.Create(ctx, user)
 	if err != nil {
-		s.lemaLogger.Error("failed to create post",
-			err,
-			zap.String("full_name", input.FullName),
-			zap.String("email", input.Email),
-			zap.String("address", input.Address.String()),
+		s.lemaLogger.Error("failed to create USER",
+			logger.WithField("err", err),
+			logger.WithField("full_name", input.FullName),
+			logger.WithField("email", input.Email),
+			logger.WithField("address", input.Address.String()),
 		)
 		return nil, err
 	}
@@ -69,7 +68,7 @@ func (s *UserService) GetUsers(ctx context.Context,
 
 	users, paginate, err := userRepo.FindManyPaginated(ctx, nil, input.Page, input.PerPage, "Address")
 	if err != nil {
-		s.lemaLogger.Error("failed to get users", err)
+		s.lemaLogger.Error("failed to get users", logger.WithField("err", err))
 		return nil, nil, err
 	}
 
@@ -84,6 +83,7 @@ func (s *UserService) GetUserByID(ctx context.Context,
 
 	user, err := userRepo.FindOne(ctx, filter, "Address")
 	if err != nil || user == nil {
+		s.lemaLogger.Error("failed to get user by id", logger.WithField("err", err))
 		return nil, errors.New("user not found")
 	}
 

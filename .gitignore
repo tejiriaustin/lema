@@ -5,7 +5,8 @@ backend/.idea
 backend/.env
 backend/testutils/mocks
 backend/lemadatabase.db
-backend/main  
+backend/main
+backend/cover.out.tmp
 
 
 # Logs

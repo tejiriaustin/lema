@@ -47,7 +47,7 @@ func structuredLogs(logger *zap.Logger) gin.HandlerFunc {
 				zap.Int("status_code", param.StatusCode),
 				zap.Int("body_size", param.BodySize),
 				zap.String("path", param.Path),
-				zap.String("method", param.Latency.String()),
+				zap.String("latency", param.Latency.String()),
 			)
 		} else {
 			logger.Info("message",
@@ -55,7 +55,7 @@ func structuredLogs(logger *zap.Logger) gin.HandlerFunc {
 				zap.Int("status_code", param.StatusCode),
 				zap.Int("body_size", param.BodySize),
 				zap.String("path", param.Path),
-				zap.String("method", param.Latency.String()),
+				zap.String("latency", param.Latency.String()),
 			)
 		}
 	}

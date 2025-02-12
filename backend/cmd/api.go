@@ -3,9 +3,8 @@ package cmd
 
 import (
 	"context"
-	"log"
-
 	"github.com/spf13/cobra"
+	"log"
 
 	constants "github.com/tejiriaustin/lema/constants"
 	"github.com/tejiriaustin/lema/database"
@@ -44,6 +43,7 @@ func startApi(cmd *cobra.Command, args []string) {
 	}
 	dbConn, err := database.Initialize(dbCfg)
 	if err != nil {
+		log.Fatalf("Failed to initialize database: %v", err)
 		return
 	}
 
@@ -53,8 +53,9 @@ func startApi(cmd *cobra.Command, args []string) {
 			models.Post{},
 			models.Address{},
 		}
-		err = dbConn.Migrate(tables...)
-		if err != nil {
+
+		if err = dbConn.Migrate(tables...); err != nil {
+			log.Fatalf("Failed to migrate database: %v", err)
 			return
 		}
 	}
@@ -63,7 +64,11 @@ func startApi(cmd *cobra.Command, args []string) {
 
 	sc := service.NewService(lemaLogger, &config)
 
-	server.Start(ctx, sc, rc, &config)
+	err = server.Start(ctx, sc, rc, &config)
+	if err != nil {
+		log.Fatalf("Server shutdown unexpectedly: %v", err)
+		return
+	}
 }
 
 func setApiEnvironment() env.Environment {

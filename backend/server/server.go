@@ -2,9 +2,12 @@ package server
 
 import (
 	"context"
+	"errors"
 	"log"
+	"net/http"
 	"os"
 	"os/signal"
+	"syscall"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -22,32 +25,45 @@ func Start(
 	service *service.Container,
 	repo *repository.Container,
 	conf *env.Environment,
-) {
+) error {
 	router := gin.New()
 
+	rateLimiter := middleware.NewRateLimiter(5, 10, time.Hour)
+
 	router.Use(
+		rateLimiter.RateLimit(),
 		middleware.CORSMiddleware(),
 		middleware.DefaultStructuredLogs(),
 		middleware.ReadPaginationOptions(),
 	)
-	log.Println("starting server...")
 
 	controllers.BindRoutes(ctx, router, service, repo, conf)
 
+	srv := &http.Server{
+		Addr:    conf.GetAsString(constants.Port),
+		Handler: router,
+	}
+
 	go func() {
-		if err := router.Run(conf.GetAsString(constants.Port)); err != nil {
-			log.Fatal("shutting down server...:", err.Error())
+		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			log.Printf("server error: %v\n", err)
+			os.Exit(1)
 		}
 	}()
 
-	// graceful shutdown
 	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, os.Interrupt, os.Kill)
-	<-quit
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+
+	sig := <-quit
+	log.Printf("received shutdown signal: %v\n", sig)
+
+	shutdownCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	if err := router; err != nil {
-		log.Fatal(err)
+	if err := srv.Shutdown(shutdownCtx); err != nil {
+		return errors.Join(err, errors.New("server forced to shutdown"))
 	}
+
+	log.Println("server exited gracefully")
+	return nil
 }

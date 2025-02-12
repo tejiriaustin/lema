@@ -3,7 +3,6 @@ package service
 import (
 	"context"
 	"github.com/tejiriaustin/lema/logger"
-	"go.uber.org/zap"
 	"strconv"
 
 	"github.com/tejiriaustin/lema/models"
@@ -48,11 +47,11 @@ func (s *PostService) CreatePost(ctx context.Context,
 
 	createdPost, err := postRepo.Create(ctx, post)
 	if err != nil {
-		s.lemaLogger.Error("failed to create user",
-			err,
-			zap.String("user_id", input.UserID),
-			zap.String("title", input.Title),
-			zap.String("body_length", strconv.Itoa(len(input.Body))),
+		s.lemaLogger.Error("failed to create post",
+			logger.WithField("err", err),
+			logger.WithField("user_id", input.UserID),
+			logger.WithField("title", input.Title),
+			logger.WithField("body_length", strconv.Itoa(len(input.Body))),
 		)
 		return nil, err
 	}
@@ -67,7 +66,9 @@ func (s *PostService) GetUserPosts(ctx context.Context,
 
 	posts, paginate, err := postRepo.FindManyPaginated(ctx, filter, input.Page, input.PerPage)
 	if err != nil {
-		s.lemaLogger.Error("failed to create user", err, zap.String("user_id", input.UserID))
+		s.lemaLogger.Error("failed to get user's posts",
+			logger.WithField("err", err),
+			logger.WithField("user_id", input.UserID))
 		return nil, nil, err
 	}
 	return posts, paginate, nil
@@ -81,7 +82,9 @@ func (s *PostService) DeletePost(ctx context.Context,
 
 	err := postRepo.DeleteMany(ctx, filter)
 	if err != nil {
-		s.lemaLogger.Error("failed to create user", err, zap.String("post_id", postID))
+		s.lemaLogger.Error("failed to delete post",
+			logger.WithField("err", err),
+			logger.WithField("post_id", postID))
 		return err
 	}
 	return nil

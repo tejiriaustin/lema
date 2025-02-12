@@ -30,32 +30,34 @@ func NewProductionLogger() (Logger, error) {
 	return &zapLogger{log: logger}, nil
 }
 
-func (l *zapLogger) Info(msg string, fields ...zap.Field) {
-	l.log.Info(msg, fields...)
-}
-
-func (l *zapLogger) Error(msg string, err error, fields ...zap.Field) {
-	if err != nil {
-		fields = append(fields, zap.Error(err))
+func (z *zapLogger) convertToZapFields(fields []Field) []zap.Field {
+	zapFields := make([]zap.Field, len(fields))
+	for i, f := range fields {
+		zapFields[i] = zap.Any(f.Key, f.Value)
 	}
-	l.log.Error(msg, fields...)
+	return zapFields
 }
 
-func (l *zapLogger) Debug(msg string, fields ...zap.Field) {
-	l.log.Debug(msg, fields...)
+func (z *zapLogger) Info(msg string, fields ...Field) {
+	z.log.Info(msg, z.convertToZapFields(fields)...)
 }
 
-func (l *zapLogger) Warn(msg string, fields ...zap.Field) {
-	l.log.Warn(msg, fields...)
+func (z *zapLogger) Error(msg string, fields ...Field) {
+	z.log.Error(msg, z.convertToZapFields(fields)...)
 }
 
-func (l *zapLogger) Fatal(msg string, err error, fields ...zap.Field) {
-	if err != nil {
-		fields = append(fields, zap.Error(err))
-	}
-	l.log.Fatal(msg, fields...)
+func (z *zapLogger) Debug(msg string, fields ...Field) {
+	z.log.Debug(msg, z.convertToZapFields(fields)...)
 }
 
-func (l *zapLogger) Sync() error {
-	return l.log.Sync()
+func (z *zapLogger) Warn(msg string, fields ...Field) {
+	z.log.Warn(msg, z.convertToZapFields(fields)...)
+}
+
+func (z *zapLogger) Fatal(msg string, fields ...Field) {
+	z.log.Fatal(msg, z.convertToZapFields(fields)...)
+}
+
+func (z *zapLogger) Sync() error {
+	return z.log.Sync()
 }

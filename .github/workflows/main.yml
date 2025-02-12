@@ -1,0 +1,84 @@
+name: Test and Deploy to EC2
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+env:
+  APP_NAME: lema-backend
+  EC2_HOST: ${{ secrets.EC2_HOST }}
+  SSH_USER: ec2-user
+  APP_DIR: /home/ec2-user/lema/backend
+
+jobs:
+  test-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.23'
+
+      - name: Install Mockery
+        run: go install github.com/vektra/mockery/v2@latest
+
+      - name: Generate Mocks
+        working-directory: ./backend
+        run: make mocks
+
+      - name: Run Tests
+        working-directory: ./backend
+        run: make test
+
+      - name: Setup SSH
+        if: success()
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to EC2
+        if: success()
+        run: |
+          ssh ${{ env.SSH_USER }}@${{ env.EC2_HOST }} '
+            cd ${{ env.APP_DIR }} || exit 1
+          
+            git pull origin main || {
+              echo "Failed to pull latest changes"
+              exit 1
+            }
+          
+            go build -o ${{ env.APP_NAME }} || {
+              echo "Failed to build application"
+              exit 1
+            }
+          
+            sudo systemctl restart ${{ env.APP_NAME }} || {
+              echo "Failed to restart service"
+              exit 1
+            }
+          
+            sudo systemctl status ${{ env.APP_NAME }} || {
+              echo "Service failed to start properly"
+              exit 1
+            }
+          '
+
+      - name: Verify Deployment
+        if: success()
+        run: |
+          sleep 5
+          ssh ${{ env.SSH_USER }}@${{ env.EC2_HOST }} 'systemctl is-active ${{ env.APP_NAME }}'
+
+      - name: Upload Test Coverage
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: cover.out.tmp

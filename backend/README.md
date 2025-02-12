@@ -49,4 +49,4 @@ Run tests with:
 go test ./...
 ```
 
-I'm looking forward to discussing this project and how I can contribute to Numeris Book's mission. Let me know if you need any additional information!
+I'm looking forward to discussing this project and how I can contribute to LemAI's mission. Let me know if you need any additional information!

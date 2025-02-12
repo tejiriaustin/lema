@@ -1,12 +1,21 @@
 package logger
 
-import "go.uber.org/zap"
+type (
+	Field struct {
+		Key   string
+		Value interface{}
+	}
 
-type Logger interface {
-	Info(msg string, fields ...zap.Field)
-	Error(msg string, err error, fields ...zap.Field)
-	Debug(msg string, fields ...zap.Field)
-	Warn(msg string, fields ...zap.Field)
-	Fatal(msg string, err error, fields ...zap.Field)
-	Sync() error
+	Logger interface {
+		Info(msg string, fields ...Field)
+		Error(msg string, fields ...Field)
+		Debug(msg string, fields ...Field)
+		Warn(msg string, fields ...Field)
+		Fatal(msg string, fields ...Field)
+		Sync() error
+	}
+)
+
+func WithField(key string, value interface{}) Field {
+	return Field{Key: key, Value: value}
 }
