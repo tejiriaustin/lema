@@ -39,7 +39,7 @@ func (suite *UserServiceTestSuite) TestCreateUser() {
 			input       func() service.CreateUserInput
 			output      func() *models.User
 			expectError bool
-			setupMock   func(*repomocks.RepoInterface[models.User])
+			setupMock   func(*repomocks.RepoInterface[models.User], *loggermocks.Logger)
 		}
 
 		address := &models.Address{
@@ -66,10 +66,38 @@ func (suite *UserServiceTestSuite) TestCreateUser() {
 					}
 				},
 				expectError: false,
-				setupMock: func(repo *repomocks.RepoInterface[models.User]) {
+				setupMock: func(repo *repomocks.RepoInterface[models.User], mockLogger *loggermocks.Logger) {
+					repo.On("FindOne", mock.Anything, mock.Anything).Return(nil, nil)
+
 					repo.On("Create", mock.Anything, mock.MatchedBy(func(u models.User) bool {
 						return u.FullName == "John Doe" && u.Email == "john@example.com"
 					})).Return(&models.User{
+						FullName: "John Doe",
+						Email:    "john@example.com",
+						Address:  address,
+					}, nil)
+				},
+			},
+			{
+				name: "user with email already exists",
+				input: func() service.CreateUserInput {
+					return service.CreateUserInput{
+						FullName: "John Doe",
+						Email:    "john@example.com",
+						Address:  address,
+					}
+				},
+				output: func() *models.User {
+					return nil
+				},
+				expectError: true,
+				setupMock: func(repo *repomocks.RepoInterface[models.User], mockLogger *loggermocks.Logger) {
+					mockLogger.On("Error",
+						"found user with matching email",
+						logger.Field{Key: "email", Value: "john@example.com"},
+					).Return()
+
+					repo.On("FindOne", mock.Anything, mock.Anything).Return(&models.User{
 						FullName: "John Doe",
 						Email:    "john@example.com",
 						Address:  address,
@@ -89,7 +117,16 @@ func (suite *UserServiceTestSuite) TestCreateUser() {
 					return nil
 				},
 				expectError: true,
-				setupMock: func(repo *repomocks.RepoInterface[models.User]) {
+				setupMock: func(repo *repomocks.RepoInterface[models.User], mockLogger *loggermocks.Logger) {
+					repo.On("FindOne", mock.Anything, mock.Anything).Return(nil, nil)
+					mockLogger.On("Error",
+						"failed to create USER",
+						logger.Field{Key: "err", Value: errors.New("database error")},
+						logger.Field{Key: "full_name", Value: "John Doe"},
+						logger.Field{Key: "email", Value: "john@example.com"},
+						logger.Field{Key: "address", Value: address.String()},
+					).Return()
+
 					repo.On("Create", mock.Anything, mock.Anything).Return(nil, errors.New("database error"))
 				},
 			},
@@ -100,29 +137,19 @@ func (suite *UserServiceTestSuite) TestCreateUser() {
 				mockLogger := new(loggermocks.Logger)
 				userRepo := new(repomocks.RepoInterface[models.User])
 
-				if tc.expectError {
-					mockLogger.On("Error",
-						"failed to create USER",
-						logger.Field{Key: "err", Value: errors.New("database error")},
-						logger.Field{Key: "full_name", Value: "John Doe"},
-						logger.Field{Key: "email", Value: "john@example.com"},
-						logger.Field{Key: "address", Value: address.String()},
-					).Return()
-				}
-
 				svc := service.NewUserService(mockLogger)
 				input := tc.input()
-				tc.setupMock(userRepo)
+				tc.setupMock(userRepo, mockLogger)
 
 				user, err := svc.CreateUser(ctx, input, userRepo)
 
 				if tc.expectError {
 					suite.NotNil(err)
 					suite.Nil(user)
-				} else {
-					suite.Nil(err)
-					suite.Equal(tc.output(), user)
+					return
 				}
+				suite.Nil(err)
+				suite.Equal(tc.output(), user)
 
 				userRepo.AssertExpectations(suite.T())
 				mockLogger.AssertExpectations(suite.T())

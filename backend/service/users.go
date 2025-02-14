@@ -51,6 +51,9 @@ func (s *UserService) CreateUser(ctx context.Context,
 
 	foundUser, err := userRepo.FindOne(ctx, filter)
 	if foundUser != nil {
+		s.lemaLogger.Error("found user with matching email",
+			logger.WithField("email", input.Email),
+		)
 		return nil, errors.New("A user with this email already exists")
 	}
 
