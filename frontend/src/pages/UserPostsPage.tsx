@@ -55,7 +55,7 @@ export function UserPostsPage() {
 
     return (
         <div className="p-8">
-            <div className="max-w-[1000px] mx-auto">
+            <div className="sm:max-w-[650px] xl:max-w-[1000px] mx-auto">
                 <div className="text-[16px] mb-6">
                     <Link
                         to="/"
@@ -75,7 +75,7 @@ export function UserPostsPage() {
                     </p>
                 </div>
 
-                <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center items-center place-items-center">
+                <div className="grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 justify-center items-center place-items-center">
                     <NewPostCard onClick={() => setIsCreateModalOpen(true)} />
 
 
