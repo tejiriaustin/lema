@@ -12,6 +12,8 @@ interface CreatePostModalProps {
 export function CreatePostModal({ isOpen, onClose, onSubmit }: CreatePostModalProps) {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const [isTitleExceeded, setIsTitleExceeded] = useState(false);
+    const [isContentExceeded, setIsContentExceeded] = useState(false);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -21,6 +23,8 @@ export function CreatePostModal({ isOpen, onClose, onSubmit }: CreatePostModalPr
         onClose();
     };
 
+    const isSubmitDisabled = !title || !content || isTitleExceeded || isContentExceeded;
+
     return (
         <Modal isOpen={isOpen} onClose={onClose} title="Create New Post">
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -29,13 +33,17 @@ export function CreatePostModal({ isOpen, onClose, onSubmit }: CreatePostModalPr
                     placeholder="Give your post a title"
                     value={title}
                     onChange={setTitle}
+                    textLimit={130}
+                    onExceeded={setIsTitleExceeded}
                 />
                 <InputBox
                     label="Post content"
                     placeholder="Write something mind-blowing"
                     value={content}
                     onChange={setContent}
+                    textLimit={1000}
                     multiline
+                    onExceeded={setIsContentExceeded}
                 />
                 <div className="flex justify-end gap-3 mt-6">
                     <Button
@@ -46,7 +54,7 @@ export function CreatePostModal({ isOpen, onClose, onSubmit }: CreatePostModalPr
                         title="Publish"
                         variant="primary"
                         type="submit"
-                        disabled={!title || !content}
+                        disabled={isSubmitDisabled}
                     />
                 </div>
             </form>
