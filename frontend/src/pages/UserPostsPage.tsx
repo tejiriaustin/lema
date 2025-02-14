@@ -55,7 +55,7 @@ export function UserPostsPage() {
 
     return (
         <div className="p-8">
-            <div className="max-w-5xl mx-auto">
+            <div className="max-w-[1000px] mx-auto">
                 <div className="text-[16px] mb-6">
                     <Link
                         to="/"
@@ -75,19 +75,16 @@ export function UserPostsPage() {
                     </p>
                 </div>
 
-                <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center">
-                    <div className="w-full">
-                        <NewPostCard onClick={() => setIsCreateModalOpen(true)} />
-                    </div>
+                <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center items-center place-items-center">
+                    <NewPostCard onClick={() => setIsCreateModalOpen(true)} />
+
 
                     {posts?.data?.body.posts.map((post: Post) => (
-                        <div key={post.id} className="w-full">
-                            <PostCard
-                                title={post.title}
-                                content={post.body}
-                                onDelete={() => setPostToDelete(post.id)}
-                            />
-                        </div>
+                        <PostCard
+                            title={post.title}
+                            content={post.body}
+                            onDelete={() => setPostToDelete(post.id)}
+                        />
                     ))}
                 </div>
 
