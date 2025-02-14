@@ -13,23 +13,23 @@ export function PostCard({ title, content, onDelete }: PostCardProps) {
     const truncatedTitle = truncateText(title, 50);
 
     return (
-        <div className="rounded-lg mt-[10px] border border-gray-200 p-6 relative shadow-sm min-w-[280px] max-w-[300px] h-[340px]">
+        <div className="rounded-lg border border-gray-300 p-6 relative shadow-lg w-[310px] h-[340px]">
             <h2
                 className="text-[20px] text-[#535862] font-inter mb-4 overflow-hidden text-ellipsis"
                 title={title}
             >
                 {truncatedTitle}
             </h2>
-            <p className="text-[14px] text-[#535862] font-inter clamp-text">{content}</p>
+            <p className="text-[16px] font-[300] text-[#535862] font-inter clamp-text">{content}</p>
 
             {onDelete && (
                 <button
                     onClick={onDelete}
-                    className="absolute top-3 right-4 text-red-500 hover:text-red-600"
+                    className="absolute top-3 right-3 text-red-500 hover:text-red-600"
                 >
                     <svg
-                        width="16"
-                        height="16"
+                        width="14"
+                        height="14"
                         viewBox="0 0 16 16"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"

@@ -64,7 +64,7 @@ export function Table<T>({data, columns, onRowClick, isLoading, totalPages, onPa
                             {columns.map((column) => (
                                 <th
                                     key={String(column.key)}
-                                    className="text-left text-[14px] font-medium text-gray-700 py-5 px-6"
+                                    className="text-left text-[14px] font-medium text-gray-800 py-5 px-6"
                                     style={{width: column.width}}
                                 >
                                     {column.header}
@@ -90,12 +90,12 @@ export function Table<T>({data, columns, onRowClick, isLoading, totalPages, onPa
                                 >
                                     {columns.map((column) => (
                                         <td key={String(column.key)}
-                                            className={`text-[16px] py-7 px-6 tracking-wide ${
+                                            className={`text-[16px] py-7 px-6 tracking-wide text-[#535862] ${
                                                 column.key === 'address' ? 'truncate max-w-[1px]' : ''
                                             } ${
                                                 column.key === 'fullName'
-                                                    ? 'font-[475] text-[#535862]'
-                                                    : 'font-[425] text-gray-500'
+                                                    ? 'font-[330]'
+                                                    : 'font-[300]'
                                             }`}>
                                             {column.render
                                                 ? column.render(item[column.key], item)

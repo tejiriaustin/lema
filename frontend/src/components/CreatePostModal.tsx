@@ -26,7 +26,7 @@ export function CreatePostModal({ isOpen, onClose, onSubmit }: CreatePostModalPr
     const isSubmitDisabled = !title || !content || isTitleExceeded || isContentExceeded;
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} title="Create New Post">
+        <Modal isOpen={isOpen} onClose={onClose} title="New Post">
             <form onSubmit={handleSubmit} className="space-y-4">
                 <InputBox
                     label="Post title"

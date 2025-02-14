@@ -55,7 +55,7 @@ export function UserPostsPage() {
 
     return (
         <div className="p-8">
-            <div className="max-w-6xl mx-auto">
+            <div className="max-w-5xl mx-auto">
                 <div className="text-[16px] mb-6">
                     <Link
                         to="/"
@@ -67,25 +67,27 @@ export function UserPostsPage() {
                 </div>
 
                 <div className="mb-8 text-center md:text-left">
-                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
+                    <h1 className="text-3xl sm:text-4xl md:text-[42px] font-medium mb-2">
                         {posts?.data?.body.user.fullName}
                     </h1>
-                    <p className="text-gray-500 tracking-wide text-[14px] sm:text-[16px]">
-                        {posts?.data?.body.user.email} • {posts?.data?.body.posts.length || 0} Posts
+                    <p className="text-black tracking-wide text-[14px] sm:text-[16px] font-[300]">
+                        {posts?.data?.body.user.email} •  <span className="font-[330]"> {posts?.data?.body.posts.length || 0} Posts </span>
                     </p>
                 </div>
 
-                {/* ✅ Responsive Grid (2 columns at 1000px) */}
-                <div className="grid grid-flow-row grid-cols-1 gap-6 md:grid-cols-2 md:gap-16 lg:grid-cols-3 lg:gap-16 xl:grid-cols-4 lg:gap-16 justify-center items-center place-items-center">
-                    <NewPostCard onClick={() => setIsCreateModalOpen(true)} />
+                <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center">
+                    <div className="w-full">
+                        <NewPostCard onClick={() => setIsCreateModalOpen(true)} />
+                    </div>
 
                     {posts?.data?.body.posts.map((post: Post) => (
-                        <PostCard
-                            key={post.id}
-                            title={post.title}
-                            content={post.body}
-                            onDelete={() => setPostToDelete(post.id)}
-                        />
+                        <div key={post.id} className="w-full">
+                            <PostCard
+                                title={post.title}
+                                content={post.body}
+                                onDelete={() => setPostToDelete(post.id)}
+                            />
+                        </div>
                     ))}
                 </div>
 
