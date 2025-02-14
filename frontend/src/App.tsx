@@ -22,18 +22,20 @@ const queryClient = new QueryClient({
 
 function App() {
     return (
-        <QueryClientProvider client={queryClient}>
-            <ToastProvider>
-                <BrowserRouter>
-                    <Routes>
-                        <Route path="/test" element={<TestPage />} />
-                        <Route path="/" element={<UsersPage />} />
-                        <Route path="/users/:userId/posts" element={<UserPostsPage />} />
-                    </Routes>
-                </BrowserRouter>
-            </ToastProvider>
-            <ReactQueryDevtools />
-        </QueryClientProvider>
+        <div className="mt-[50px]">
+            <QueryClientProvider client={queryClient}>
+                <ToastProvider>
+                    <BrowserRouter>
+                        <Routes>
+                            <Route path="/test" element={<TestPage />} />
+                            <Route path="/" element={<UsersPage />} />
+                            <Route path="/users/:userId/posts" element={<UserPostsPage />} />
+                        </Routes>
+                    </BrowserRouter>
+                </ToastProvider>
+                <ReactQueryDevtools />
+            </QueryClientProvider>
+        </div>
     )
 }
 
