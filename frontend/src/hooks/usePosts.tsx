@@ -30,6 +30,8 @@ export function usePosts(userId: string) {
         deletePost: deletePostMutation.mutate,
         isCreating: createPostMutation.isPending,
         isDeleting: deletePostMutation.isPending,
-        isLoading: posts.isLoading || createPostMutation.isPending || deletePostMutation.isPending
+        isLoading: posts.isLoading || createPostMutation.isPending || deletePostMutation.isPending,
+        mutationError: createPostMutation.error,
+        isError: createPostMutation.isError,
     }
 }

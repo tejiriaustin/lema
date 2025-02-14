@@ -47,6 +47,13 @@ func (s *UserService) CreateUser(ctx context.Context,
 		Address:  input.Address,
 	}
 
+	filter := repository.NewQueryFilter().Where("email = ?", user.Email)
+
+	foundUser, err := userRepo.FindOne(ctx, filter)
+	if foundUser != nil {
+		return nil, errors.New("A user with this email already exists")
+	}
+
 	createdUser, err := userRepo.Create(ctx, user)
 	if err != nil {
 		s.lemaLogger.Error("failed to create USER",

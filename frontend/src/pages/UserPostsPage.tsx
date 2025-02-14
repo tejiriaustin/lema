@@ -8,21 +8,41 @@ import { DeleteConfirmationModal } from "../components/DeleteConfirmationModal";
 import { Post } from '../types';
 import { ArrowLeft } from 'lucide-react';
 import { NewPostCard } from "../components/NewPostCard.tsx";
+import { useToast } from '../components/ToastProvider';
 
 export function UserPostsPage() {
     const { userId } = useParams();
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [postToDelete, setPostToDelete] = useState<string | null>(null);
     const { posts, createPost, deletePost, isLoading: postsLoading } = usePosts(userId!);
+    const { showToast } = useToast();
 
     const handleCreatePost = async (data: { title: string; body: string }) => {
-        createPost({ ...data, user_id: userId! });
+        createPost({ ...data, user_id: userId! }, {
+            onSuccess: () => {
+                showToast('Post created successfully', 'success');
+                setPostToDelete(null);
+            },
+            onError: (error: Error) => {
+                console.log(error?.message);
+                showToast('Failed to create post', 'error');
+            }
+        });
         setIsCreateModalOpen(false);
     };
 
     const handleDeletePost = async () => {
         if (postToDelete) {
-            deletePost(postToDelete);
+            deletePost(postToDelete, {
+                onSuccess: () => {
+                    showToast('Post deleted successfully', 'success');
+                    setPostToDelete(null);
+                },
+                onError: (error: Error) => {
+                    console.log(error?.message);
+                    showToast('Failed to delete post', 'error');
+                }
+            });
             setPostToDelete(null);
         }
     };

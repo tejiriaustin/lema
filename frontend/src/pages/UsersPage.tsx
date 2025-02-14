@@ -11,7 +11,7 @@ export function UsersPage() {
     const [page, setPage] = useState(1);
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { data, createUser, isLoading } = useUsers(page);
+    const { data, createUser, isLoading, mutationError } = useUsers(page);
     const { showToast } = useToast();
 
     const columns = [
@@ -62,16 +62,15 @@ export function UsersPage() {
             zipcode: string
         }
     }) => {
-        try {
-            await createUser(userData);
-            showToast('User created successfully', 'success');
-            setIsModalOpen(false);
-        } catch (error) {
-            showToast(
-                error instanceof Error ? error.message : 'Failed to create user',
-                'error'
-            );
-        }
+        createUser(userData, {
+            onSuccess: () => {
+                showToast('User created successfully', 'success');
+                setIsModalOpen(false);
+            },
+            onError: (error: Error) => {
+                showToast(error.message || 'Failed to create user', 'error');
+            }
+        });
     }
 
     return (
@@ -104,6 +103,7 @@ export function UsersPage() {
                 onClose={() => setIsModalOpen(false)}
                 isOpen={isModalOpen}
                 onSubmit={handleSubmit}
+                error={mutationError as Error}
             />
         </div>
     )

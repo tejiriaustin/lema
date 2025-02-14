@@ -34,6 +34,8 @@ export function useUsers(page: number) {
         data,
         createUser: createUserMutation.mutate,
         isLoading: data.isLoading || createUserMutation.isPending,
-        error: data.error || createUserMutation.error
+        error: data.error || createUserMutation.error,
+        isError: createUserMutation.isError,
+        mutationError: createUserMutation.error
     }
 }

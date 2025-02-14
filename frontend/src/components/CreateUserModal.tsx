@@ -7,19 +7,22 @@ interface CreateUserModalProps {
     isOpen: boolean;
     onClose: () => void;
     onSubmit: (data: { full_name: string; email: string; address: { street: string; city: string; state: string; zipcode: string}}) => void;
+    error?: Error;
 }
 
-export function CreateUserModal({isOpen, onSubmit, onClose}: CreateUserModalProps) {
-    const [formData, setFormData] = useState({
-        full_name: '',
-        email: '',
-        address: {
-            street: '',
-            city: '',
-            state: '',
-            zipcode: ''
-        }
-    });
+const initialFormState = {
+    full_name: '',
+    email: '',
+    address: {
+        street: '',
+        city: '',
+        state: '',
+        zipcode: ''
+    }
+};
+
+export function CreateUserModal({isOpen, onSubmit, onClose, error}: CreateUserModalProps) {
+    const [formData, setFormData] = useState(initialFormState);
 
     const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
@@ -51,6 +54,7 @@ export function CreateUserModal({isOpen, onSubmit, onClose}: CreateUserModalProp
                     value={formData.email}
                     onChange={(value) => setFormData({ ...formData, email: value })}
                     type="email"
+                    error={error?.message}
                 />
                 <InputBox
                     label="Street Address"
