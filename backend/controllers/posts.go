@@ -53,7 +53,7 @@ func (c *PostController) CreatePost(
 
 		post, err := postService.CreatePost(ctx, input, postsRepo)
 		if err != nil {
-			response.FormatResponse(ctx, http.StatusBadRequest, err.Error(), nil)
+			response.FormatResponse(ctx, http.StatusInternalServerError, err.Error(), nil)
 			return
 		}
 
@@ -90,7 +90,7 @@ func (c *PostController) GetPosts(
 
 		posts, paginationData, err := postService.GetUserPosts(ctx, input, postsRepo)
 		if err != nil {
-			response.FormatResponse(ctx, http.StatusBadRequest, err.Error(), nil)
+			response.FormatResponse(ctx, http.StatusInternalServerError, err.Error(), nil)
 			return
 		}
 

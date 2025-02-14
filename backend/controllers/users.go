@@ -44,7 +44,7 @@ func (c *UserController) CreateUser(
 
 		user, err := userService.CreateUser(ctx, input, usersRepo)
 		if err != nil {
-			response.FormatResponse(ctx, http.StatusBadRequest, err.Error(), nil)
+			response.FormatResponse(ctx, http.StatusInternalServerError, err.Error(), nil)
 			return
 		}
 
@@ -65,7 +65,7 @@ func (c *UserController) GetUser(
 
 		user, err := userService.GetUserByID(ctx, userID, usersRepo)
 		if err != nil {
-			response.FormatResponse(ctx, http.StatusBadRequest, err.Error(), nil)
+			response.FormatResponse(ctx, http.StatusInternalServerError, err.Error(), nil)
 			return
 		}
 
@@ -87,7 +87,7 @@ func (c *UserController) GetUsers(
 
 		users, paginate, err := userService.GetUsers(ctx, input, usersRepo)
 		if err != nil {
-			response.FormatResponse(ctx, http.StatusBadRequest, err.Error(), nil)
+			response.FormatResponse(ctx, http.StatusInternalServerError, err.Error(), nil)
 			return
 		}
 
@@ -107,7 +107,7 @@ func (c *UserController) GetUsersCount(
 	return func(ctx *gin.Context) {
 		usersCount, err := userService.GetUserCount(ctx, usersRepo)
 		if err != nil {
-			response.FormatResponse(ctx, http.StatusBadRequest, err.Error(), nil)
+			response.FormatResponse(ctx, http.StatusInternalServerError, err.Error(), nil)
 			return
 		}
 

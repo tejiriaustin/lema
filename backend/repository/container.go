@@ -145,10 +145,6 @@ func (r *Repository[T]) Update(ctx context.Context, dataObject T) (*T, error) {
 	return &dataObject, nil
 }
 
-func (r *Repository[T]) Select(ctx context.Context, target interface{}, query string, args ...interface{}) error {
-	return r.db.WithContext(ctx).Select(query, args...).Scan(target).Error
-}
-
 func (r *Repository[T]) Count(ctx context.Context, queryFilter *Query) (int64, error) {
 	var count int64
 	db := r.db.WithContext(ctx).Model(new(T))

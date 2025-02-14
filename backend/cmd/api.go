@@ -43,7 +43,7 @@ func startApi(cmd *cobra.Command, args []string) {
 	}
 	dbConn, err := database.Initialize(dbCfg)
 	if err != nil {
-		log.Fatalf("Failed to initialize database: %v", err)
+		lemaLogger.Fatal("Failed to initialize database: %v", logger.WithField("error", err))
 		return
 	}
 
@@ -55,7 +55,7 @@ func startApi(cmd *cobra.Command, args []string) {
 		}
 
 		if err = dbConn.Migrate(tables...); err != nil {
-			log.Fatalf("Failed to migrate database: %v", err)
+			lemaLogger.Fatal("Failed to migrate database: %v", logger.WithField("error", err))
 			return
 		}
 	}
@@ -66,7 +66,7 @@ func startApi(cmd *cobra.Command, args []string) {
 
 	err = server.Start(ctx, sc, rc, &config)
 	if err != nil {
-		log.Fatalf("Server shutdown unexpectedly: %v", err)
+		lemaLogger.Fatal("Server shutdown unexpectedly: %v", logger.WithField("error", err))
 		return
 	}
 }

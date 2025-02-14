@@ -39,7 +39,6 @@ func TestPostController(t *testing.T) {
 }
 
 func (suite *PostControllerTestSuite) setupTest() (*gin.Engine, *servicemocks.UserServiceInterface, *servicemocks.PostServiceInterface, *repository.Repository[models.User], *repository.Repository[models.Post]) {
-	// Create fresh instances for each test
 	mockUserSvc := new(servicemocks.UserServiceInterface)
 	mockPostSvc := new(servicemocks.PostServiceInterface)
 	userRepo := &repository.Repository[models.User]{}
@@ -138,7 +137,7 @@ func (suite *PostControllerTestSuite) TestCreatePost() {
 						mock.Anything,
 					).Return(nil, errors.New("failed to create post"))
 				},
-				expectedCode: http.StatusBadRequest,
+				expectedCode: http.StatusInternalServerError,
 				expectedMsg:  "failed to create post",
 			},
 		}

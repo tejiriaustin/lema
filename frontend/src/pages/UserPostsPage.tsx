@@ -47,7 +47,11 @@ export function UserPostsPage() {
         }
     };
 
-    if (postsLoading) return <Loader />;
+    if (postsLoading) return (
+        <div className="flex items-center justify-center">
+            <Loader />
+        </div>
+    );
 
     return (
         <div className="p-8">
