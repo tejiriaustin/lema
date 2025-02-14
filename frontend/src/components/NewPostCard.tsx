@@ -6,7 +6,7 @@ export function NewPostCard({ onClick }: NewPostCardProps) {
     return (
         <button
             onClick={onClick}
-            className="button-block sqs-block-button-element min-w-[280px] max-w-[300px] mt-[10px] h-[340px] flex flex-col items-center justify-center rounded-lg p-[10px] border-[1px] border-dashed border-[#D5D7DA] text-[#717680] hover:bg-gray-100"
+            className="button-block sqs-block-button-element min-w-[280px] max-w-[300px] mt-[10px] h-[340px] flex flex-col items-center justify-center rounded-lg border-[1px] border-dashed border-[#D5D7DA] text-[#717680] hover:bg-gray-100"
         >
             <div className="flex flex-col items-center gap-0">
                 <svg

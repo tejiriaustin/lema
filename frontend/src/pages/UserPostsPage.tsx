@@ -76,7 +76,7 @@ export function UserPostsPage() {
                 </div>
 
                 {/* ✅ Responsive Grid (2 columns at 1000px) */}
-                <div className="grid sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 justify-center items-center place-items-center">
+                <div className="grid grid-flow-row grid-cols-1 gap-6 md:grid-cols-2 md:gap-16 lg:grid-cols-3 lg:gap-16 xl:grid-cols-4 lg:gap-16 justify-center items-center place-items-center">
                     <NewPostCard onClick={() => setIsCreateModalOpen(true)} />
 
                     {posts?.data?.body.posts.map((post: Post) => (

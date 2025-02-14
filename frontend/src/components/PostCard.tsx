@@ -4,10 +4,22 @@ interface PostCardProps {
     onDelete?: () => void;
 }
 
+function truncateText(text: string, limit: number): string {
+    if (text.length <= limit) return text;
+    return text.slice(0, limit).trim() + '...';
+}
+
 export function PostCard({ title, content, onDelete }: PostCardProps) {
+    const truncatedTitle = truncateText(title, 50);
+
     return (
         <div className="rounded-lg mt-[10px] border border-gray-200 p-6 relative shadow-sm min-w-[280px] max-w-[300px] h-[340px]">
-            <h2 className="text-[20px] text-[#535862] font-inter mb-4">{title}</h2>
+            <h2
+                className="text-[20px] text-[#535862] font-inter mb-4 overflow-hidden text-ellipsis"
+                title={title}
+            >
+                {truncatedTitle}
+            </h2>
             <p className="text-[14px] text-[#535862] font-inter clamp-text">{content}</p>
 
             {onDelete && (
