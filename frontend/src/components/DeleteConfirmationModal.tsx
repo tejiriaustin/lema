@@ -5,9 +5,10 @@ interface DeleteConfirmationModalProps {
     isOpen: boolean;
     onClose: () => void;
     onConfirm: () => void;
+    isLoading?: boolean;
 }
 
-export function DeleteConfirmationModal({ isOpen, onClose, onConfirm }: DeleteConfirmationModalProps) {
+export function DeleteConfirmationModal({ isOpen, onClose, onConfirm, isLoading }: DeleteConfirmationModalProps) {
     return (
         <Modal isOpen={isOpen} onClose={onClose} title="Delete Post">
             <div className="space-y-4">
@@ -26,6 +27,7 @@ export function DeleteConfirmationModal({ isOpen, onClose, onConfirm }: DeleteCo
                             onConfirm();
                             onClose();
                         }}
+                        isLoading={isLoading}
                     />
                 </div>
             </div>

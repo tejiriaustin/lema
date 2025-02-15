@@ -74,7 +74,7 @@ export function UsersPage() {
     }
 
     return (
-        <div className="p-4 md:p-6 lg:p-8 max-w-[1100px] mx-auto mt-30">
+        <div className="p-4 md:p-6 lg:p-8 max-w-[1065px] mx-auto mt-30">
             <div className="flex flex-row sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                 <h1 className="text-4xl md:text-5xl lg:text-7xl font-normal">Users</h1>
                 <Button

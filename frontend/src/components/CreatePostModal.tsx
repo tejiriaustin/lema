@@ -7,9 +7,10 @@ interface CreatePostModalProps {
     isOpen: boolean;
     onClose: () => void;
     onSubmit: (data: { title: string; body: string }) => void;
+    isLoading?: boolean;
 }
 
-export function CreatePostModal({ isOpen, onClose, onSubmit }: CreatePostModalProps) {
+export function CreatePostModal({ isOpen, onClose, onSubmit, isLoading }: CreatePostModalProps) {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [isTitleExceeded, setIsTitleExceeded] = useState(false);
@@ -55,6 +56,7 @@ export function CreatePostModal({ isOpen, onClose, onSubmit }: CreatePostModalPr
                         variant="primary"
                         type="submit"
                         disabled={isSubmitDisabled}
+                        isLoading={isLoading}
                     />
                 </div>
             </form>

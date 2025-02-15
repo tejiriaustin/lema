@@ -9,7 +9,7 @@ body {
 
 .clamp-text {
     display: -webkit-box;
-    -webkit-line-clamp: 14;
+    -webkit-line-clamp: 9;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -24,6 +24,9 @@ body {
     border-radius: 10px;
 }
 
+.long-dashed-border {
+    border: 2px dashed;
+}
 
 .lds-ellipsis,
 .lds-ellipsis div {

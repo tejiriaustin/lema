@@ -13,11 +13,13 @@ import { useToast } from '../components/ToastProvider';
 export function UserPostsPage() {
     const { userId } = useParams();
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [postToDelete, setPostToDelete] = useState<string | null>(null);
     const { posts, createPost, deletePost, isLoading: postsLoading } = usePosts(userId!);
     const { showToast } = useToast();
 
     const handleCreatePost = async (data: { title: string; body: string }) => {
+        setIsSubmitting(true);
         createPost({ ...data, user_id: userId! }, {
             onSuccess: () => {
                 showToast('Post created successfully', 'success');
@@ -29,6 +31,7 @@ export function UserPostsPage() {
             }
         });
         setIsCreateModalOpen(false);
+        setIsSubmitting(false);
     };
 
     const handleDeletePost = async () => {
@@ -92,12 +95,14 @@ export function UserPostsPage() {
                     isOpen={isCreateModalOpen}
                     onClose={() => setIsCreateModalOpen(false)}
                     onSubmit={handleCreatePost}
+                    isLoading={isSubmitting}
                 />
 
                 <DeleteConfirmationModal
                     isOpen={!!postToDelete}
                     onClose={() => setPostToDelete(null)}
                     onConfirm={handleDeletePost}
+                    isLoading={isSubmitting}
                 />
             </div>
         </div>

@@ -64,7 +64,7 @@ export function Table<T>({data, columns, onRowClick, isLoading, totalPages, onPa
                             {columns.map((column) => (
                                 <th
                                     key={String(column.key)}
-                                    className="text-left text-[14px] font-medium text-gray-800 py-5 px-6"
+                                    className="text-left text-[14px] font-medium text-[#535862] py-5 px-6"
                                     style={{width: column.width}}
                                 >
                                     {column.header}
