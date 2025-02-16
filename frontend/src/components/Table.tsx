@@ -93,7 +93,7 @@ export function Table<T>({data, columns, onRowClick, isLoading, totalPages, onPa
                                 >
                                     {columns.map((column) => (
                                         <td key={String(column.key)}
-                                            className={`text-[16px] py-7 px-6 tracking-wide text-[#535862] ${
+                                            className={`text-[16px] py-7 px-6 tracking-wide text-[#535862] whitespace-nowrap ${
                                                 column.key === 'address' ? 'truncate max-w-[1px]' : ''
                                             } ${
                                                 column.key === 'fullName'
