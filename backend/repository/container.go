@@ -64,7 +64,7 @@ func (r *Repository[T]) FindOne(ctx context.Context, queryFilter *Query, preload
 
 	if err := db.First(&result).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return result, ErrNotFound
+			return nil, ErrNotFound
 		}
 		return result, err
 	}

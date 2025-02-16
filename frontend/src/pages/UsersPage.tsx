@@ -84,7 +84,7 @@ export function UsersPage() {
                 />
             </div>
 
-            <div className="rounded-lg shadow-sm -mx-4 sm:mx-0">
+            <div className="rounded-lg -mx-4 sm:mx-0">
                 <div className="overflow-x-auto">
                     <Table
                         isLoading={isLoading}

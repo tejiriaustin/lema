@@ -53,6 +53,7 @@ func (s *UserService) CreateUser(ctx context.Context,
 	if foundUser != nil {
 		s.lemaLogger.Error("found user with matching email",
 			logger.WithField("email", input.Email),
+			logger.WithField("user", user),
 		)
 		return nil, errors.New("A user with this email already exists")
 	}
