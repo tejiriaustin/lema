@@ -62,7 +62,7 @@ func (suite *UserControllerTestSuite) TestCreateUser() {
 			Street:  "Street",
 			City:    "City",
 			State:   "State",
-			ZipCode: "ZipCode",
+			Zipcode: "Zipcode",
 		}
 
 		testCases := []testCase{

@@ -19,7 +19,7 @@ func SingleAddressResponse(address *models.Address) map[string]interface{} {
 		"street":  address.Street,
 		"city":    address.City,
 		"state":   address.State,
-		"zipCode": address.ZipCode,
+		"zipCode": address.Zipcode,
 	}
 }
 
