@@ -7,11 +7,11 @@ import (
 
 type Address struct {
 	Shared  `gorm:"embedded"`
-	UserID  uuid.UUID `json:"user_id" gorm:"type:uuid;not null"`
-	Street  string    `json:"street" gorm:"type:varchar(200);not null"`
-	City    string    `json:"city" gorm:"type:varchar(100);not null"`
-	State   string    `json:"state" gorm:"type:varchar(100);not null"`
-	ZipCode string    `json:"zipcode" gorm:"type:varchar(20);not null"`
+	UserID  string `json:"user_id" gorm:"type:varchar(32);not null"`
+	Street  string `json:"street" gorm:"type:varchar(100);not null"`
+	City    string `json:"city" gorm:"type:varchar(100);not null"`
+	State   string `json:"state" gorm:"type:varchar(100);not null"`
+	ZipCode string `json:"zipcode" gorm:"type:varchar(20);not null"`
 }
 
 func (a *Address) String() string {
@@ -19,7 +19,7 @@ func (a *Address) String() string {
 }
 
 func (a *Address) PreValidate() {
-	if a.ID == uuid.Nil {
-		a.ID = uuid.New()
+	if a.ID == "" {
+		a.ID = uuid.New().String()
 	}
 }

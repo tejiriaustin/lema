@@ -74,7 +74,7 @@ func (suite *PostControllerTestSuite) TestCreatePost() {
 						"user123",
 						mock.Anything,
 					).Return(&models.User{
-						FullName: "Test User",
+						Name: "Test User",
 					}, nil)
 
 					postSvc.On("CreatePost",
@@ -124,7 +124,7 @@ func (suite *PostControllerTestSuite) TestCreatePost() {
 						"user123",
 						mock.Anything,
 					).Return(&models.User{
-						FullName: "Test User",
+						Name: "Test User",
 					}, nil)
 
 					postSvc.On("CreatePost",

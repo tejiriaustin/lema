@@ -1,18 +1,20 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useUsers } from '../hooks/useUsers.tsx';
 import { Table } from '../components/Table';
 import { User, Address } from '../types';
-import { Button } from "../components/Button.tsx";
 import { CreateUserModal } from "../components/CreateUserModal.tsx";
 import { useToast } from '../components/ToastProvider';
 
+
 export function UsersPage() {
-    const [page, setPage] = useState(1);
+    const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const page = Number(searchParams.get('page')) || 1;
     const { data, createUser, isLoading, mutationError } = useUsers(page);
     const { showToast } = useToast();
+
 
     const columns = [
         { header: "Full Name", key: "fullName" as const, width: "220px" },
@@ -36,7 +38,7 @@ export function UsersPage() {
 
     const handleRowClick = (user: User) => {
         try {
-            navigate(`/users/${user.id}/posts`);
+            navigate(`/users/${user.id}/posts?page=${page}`);
         } catch (error) {
             console.log(error)
             showToast('Error navigating to user posts', 'error');
@@ -45,7 +47,7 @@ export function UsersPage() {
 
     const handlePageChange = (newPage: number) => {
         try {
-            setPage(newPage);
+            setSearchParams({ page: newPage.toString() });
         } catch (error) {
             console.log(error)
             showToast('Error changing page', 'error');
@@ -77,11 +79,6 @@ export function UsersPage() {
         <div className="p-4 md:p-6 lg:p-8 max-w-[1065px] mx-auto mt-30">
             <div className="flex flex-row sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                 <h1 className="text-4xl md:text-5xl lg:text-7xl font-normal">Users</h1>
-                <Button
-                    title="Create User"
-                    variant="primary"
-                    onClick={() => setIsModalOpen(true)}
-                />
             </div>
 
             <div className="rounded-lg -mx-4 sm:mx-0">

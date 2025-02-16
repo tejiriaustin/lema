@@ -7,14 +7,14 @@ import (
 
 type Post struct {
 	Shared `gorm:"embedded"`
-	UserID string `json:"user_id" gorm:"not null"`
+	UserID string `json:"user_id" gorm:"type:varchar(200);not null"`
 	Title  string `json:"title" gorm:"type:varchar(200);not null"`
 	Body   string `json:"body" gorm:"type:text;not null"`
 }
 
 func (p *Post) PreValidate() {
-	if p.ID == uuid.Nil {
-		p.ID = uuid.New()
+	if p.ID == "" {
+		p.ID = uuid.New().String()
 	}
 
 	if p.CreatedAt == nil {

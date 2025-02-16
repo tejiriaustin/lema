@@ -60,9 +60,9 @@ func (suite *UserServiceTestSuite) TestCreateUser() {
 				},
 				output: func() *models.User {
 					return &models.User{
-						FullName: "John Doe",
-						Email:    "john@example.com",
-						Address:  address,
+						Name:    "John Doe",
+						Email:   "john@example.com",
+						Address: address,
 					}
 				},
 				expectError: false,
@@ -70,11 +70,11 @@ func (suite *UserServiceTestSuite) TestCreateUser() {
 					repo.On("FindOne", mock.Anything, mock.Anything).Return(nil, nil)
 
 					repo.On("Create", mock.Anything, mock.MatchedBy(func(u models.User) bool {
-						return u.FullName == "John Doe" && u.Email == "john@example.com"
+						return u.Name == "John Doe" && u.Email == "john@example.com"
 					})).Return(&models.User{
-						FullName: "John Doe",
-						Email:    "john@example.com",
-						Address:  address,
+						Name:    "John Doe",
+						Email:   "john@example.com",
+						Address: address,
 					}, nil)
 				},
 			},
@@ -98,9 +98,9 @@ func (suite *UserServiceTestSuite) TestCreateUser() {
 					).Return()
 
 					repo.On("FindOne", mock.Anything, mock.Anything).Return(&models.User{
-						FullName: "John Doe",
-						Email:    "john@example.com",
-						Address:  address,
+						Name:    "John Doe",
+						Email:   "john@example.com",
+						Address: address,
 					}, nil)
 				},
 			},
@@ -185,12 +185,12 @@ func (suite *UserServiceTestSuite) TestGetUsers() {
 				output: func() []*models.User {
 					return []*models.User{
 						{
-							FullName: "John Doe",
-							Email:    "john@example.com",
+							Name:  "John Doe",
+							Email: "john@example.com",
 						},
 						{
-							FullName: "Jane Doe",
-							Email:    "jane@example.com",
+							Name:  "Jane Doe",
+							Email: "jane@example.com",
 						},
 					}
 				},
@@ -210,12 +210,12 @@ func (suite *UserServiceTestSuite) TestGetUsers() {
 						"Address",
 					).Return([]*models.User{
 						{
-							FullName: "John Doe",
-							Email:    "john@example.com",
+							Name:  "John Doe",
+							Email: "john@example.com",
 						},
 						{
-							FullName: "Jane Doe",
-							Email:    "jane@example.com",
+							Name:  "Jane Doe",
+							Email: "jane@example.com",
 						},
 					}, &repository.Paginator{
 						CurrentPage: 1,
@@ -307,8 +307,8 @@ func (suite *UserServiceTestSuite) TestGetUserByID() {
 				userID: "user-123",
 				output: func() *models.User {
 					return &models.User{
-						FullName: "John Doe",
-						Email:    "john@example.com",
+						Name:  "John Doe",
+						Email: "john@example.com",
 					}
 				},
 				setupMock: func(repo *repomocks.RepoInterface[models.User]) {
@@ -319,8 +319,8 @@ func (suite *UserServiceTestSuite) TestGetUserByID() {
 						}),
 						"Address",
 					).Return(&models.User{
-						FullName: "John Doe",
-						Email:    "john@example.com",
+						Name:  "John Doe",
+						Email: "john@example.com",
 					}, nil)
 				},
 				expectError: false,

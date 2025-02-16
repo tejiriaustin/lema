@@ -42,9 +42,9 @@ func (s *UserService) CreateUser(ctx context.Context,
 ) (*models.User, error) {
 
 	user := models.User{
-		FullName: input.FullName,
-		Email:    input.Email,
-		Address:  input.Address,
+		Name:    input.FullName,
+		Email:   input.Email,
+		Address: input.Address,
 	}
 
 	filter := repository.NewQueryFilter().Where("email = ?", user.Email)

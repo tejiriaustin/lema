@@ -8,7 +8,7 @@ import (
 
 type (
 	Models interface {
-		GetID() uuid.UUID
+		GetID() string
 		GetVersion() uint
 	}
 
@@ -24,7 +24,7 @@ type (
 )
 
 type Shared struct {
-	ID        uuid.UUID  `json:"id" gorm:"type:uuid;primaryKey;default:uuid_generate_v4()"`
+	ID        string     `json:"id" gorm:"type:varchar(32);primaryKey"`
 	CreatedAt *time.Time `json:"created_at" gorm:"created_at"`
 	UpdatedAt *time.Time `json:"updated_at" gorm:"updated_at"`
 	DeletedAt *time.Time `json:"deleted_at" gorm:"deleted_at"`
@@ -35,7 +35,7 @@ func (m Shared) PreValidate() {}
 
 var _ Models = &Shared{}
 
-func (m Shared) GetID() uuid.UUID {
+func (m Shared) GetID() string {
 	return m.ID
 }
 
@@ -44,8 +44,8 @@ func (m Shared) GetVersion() uint {
 }
 
 func (m Shared) BeforeCreate(tx *gorm.DB) error {
-	if m.ID == uuid.Nil {
-		m.ID = uuid.New()
+	if m.ID == "" {
+		m.ID = uuid.New().String()
 	}
 	return nil
 }

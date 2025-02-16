@@ -83,9 +83,9 @@ func (suite *UserControllerTestSuite) TestCreateUser() {
 						},
 						mock.Anything,
 					).Return(&models.User{
-						FullName: "Test User",
-						Email:    "test@example.com",
-						Address:  &address,
+						Name:    "Test User",
+						Email:   "test@example.com",
+						Address: &address,
 					}, nil)
 				},
 				expectedCode: http.StatusOK,

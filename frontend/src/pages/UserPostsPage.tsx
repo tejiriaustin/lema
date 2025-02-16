@@ -9,6 +9,7 @@ import { Post } from '../types';
 import { ArrowLeft } from 'lucide-react';
 import { NewPostCard } from "../components/NewPostCard.tsx";
 import { useToast } from '../components/ToastProvider';
+import { useSearchParams } from 'react-router-dom';
 
 export function UserPostsPage() {
     const { userId } = useParams();
@@ -17,6 +18,8 @@ export function UserPostsPage() {
     const [postToDelete, setPostToDelete] = useState<string | null>(null);
     const { posts, createPost, deletePost, isLoading: postsLoading } = usePosts(userId!);
     const { showToast } = useToast();
+    const [searchParams] = useSearchParams();
+    const usersPage = searchParams.get('page') || '1';
 
     const handleCreatePost = async (data: { title: string; body: string }) => {
         setIsSubmitting(true);
@@ -50,6 +53,7 @@ export function UserPostsPage() {
         }
     };
 
+
     if (postsLoading) return (
         <div className="flex items-center justify-center">
             <Loader />
@@ -61,7 +65,7 @@ export function UserPostsPage() {
             <div className="sm:max-w-[650px] xl:max-w-[1000px] mx-auto">
                 <div className="text-[16px] mb-6">
                     <Link
-                        to="/"
+                        to={`/users?page=${usersPage}`}
                         className="inline-flex items-center text-gray-600 tracking-wide hover:text-gray-400 transition"
                     >
                         <ArrowLeft className="w-6 h-8 mr-2" />

@@ -29,26 +29,29 @@ export function Table<T>({data, columns, onRowClick, isLoading, totalPages, onPa
 
     const renderPaginationNumbers = () => {
         const pages = [];
-        const showEllipsis = totalPages > 3;
 
-        if (showEllipsis) {
-            if (currentPage <= 2) {
-                for (let i = 1; i <= 3; i++) pages.push(i);
+        if (currentPage <= 3) {
+            pages.push(1, 2, 3);
+            if (totalPages > 6) {
                 pages.push('...');
-                pages.push(totalPages);
-            } else if (currentPage >= totalPages - 2) {
-                pages.push(1);
-                pages.push('...');
-                for (let i = totalPages - 2; i <= totalPages; i++) pages.push(i);
+                pages.push(totalPages - 2, totalPages - 1, totalPages);
             } else {
-                pages.push(1);
-                pages.push('...');
-                for (let i = currentPage - 1; i <= currentPage + 1; i++) pages.push(i);
-                pages.push('...');
-                pages.push(totalPages);
+                for (let i = 4; i <= totalPages; i++) {
+                    pages.push(i);
+                }
             }
-        } else {
-            for (let i = 1; i <= totalPages; i++) pages.push(i);
+        }
+        else {
+            pages.push(currentPage - 1, currentPage, currentPage + 1);
+
+            if (currentPage < totalPages - 3) {
+                pages.push('...');
+                pages.push(totalPages - 2, totalPages - 1, totalPages);
+            } else {
+                for (let i = currentPage + 2; i <= totalPages; i++) {
+                    pages.push(i);
+                }
+            }
         }
 
         return pages;
